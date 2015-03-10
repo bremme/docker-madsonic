@@ -18,7 +18,7 @@ Docker image of [Madsonic](http://www.madsonic.org/) 5.2.5420 build on Debian Je
 ## Features
 
 * Lightweight Debian based
-* Supervisor process management
+* [Supervisor](http://supervisord.org/) process management
 * UTF-8 support
 * Exposes most of the [Madsonic](http://www.madsonic.org/) configuration options through environmental variables
 
@@ -26,7 +26,7 @@ Docker image of [Madsonic](http://www.madsonic.org/) 5.2.5420 build on Debian Je
 
 ```shell
 $ git clone
-$ sudo docker build -t bremme/[Madsonic](http://www.madsonic.org/)
+$ sudo docker build -t bremme/madsonic
 ```
 
 # Running container
@@ -52,12 +52,12 @@ $ sudo docker run \
 | MAD_HOST          | 0.0.0.0           | Hostname/ip address               |
 | MAD_PORT          | 4040              | HTTP port                         |
 | MAD_HTTPS_PORT    | 0                 | HTTPS port (0 = disabled)         |
-| MAD_CONTEXT_PATH  | /                 | The last part of the [Madsonic](http://www.madsonic.org/) URL |
+| MAD_CONTEXT_PATH  | /                 | The last part of the madsonic URL |
 | MAD_INIT_MEM      | 192               | Init Java heap size in megabytes  |
 | MAD_MAX_MEM       | 384               | Max Java heap size in megabytes   |
 | MAD_TIME_ZONE     | Europe/Amsterdam  | Timezone                          |
-| MAD_UID           | 1000              | [Madsonic](http://www.madsonic.org/) UID                      |
-| MAD_GID           | 1000              | [Madsonic](http://www.madsonic.org/) GID                      |
+| MAD_UID           | 1000              | madsonic UID                      |
+| MAD_GID           | 1000              | madsonic GID                      |
  
 If you are mounting a music directory from your host machine and you want [Madsonic](http://www.madsonic.org/) to be able to change album art and tags, MAD_UID and MAD_GID should match the UID and GID of the music directory on the host machine.
 
@@ -95,23 +95,23 @@ docker run \
 
 [Madsonic](http://www.madsonic.org/) will log to three places:
 
-* stdout goes to: `/var/log/supervisor/[Madsonic](http://www.madsonic.org/).stdout.log`
-* stderr goed to: `/var/log/supervisor/[Madsonic](http://www.madsonic.org/).stderr.log`
-* [Madsonic](http://www.madsonic.org/)'s own log goes to: `/var/[Madsonic](http://www.madsonic.org/)/[Madsonic](http://www.madsonic.org/).log`
+* stdout goes to: `/var/log/supervisor/madsonic.stdout.log`
+* stderr goed to: `/var/log/supervisor/madsonic.stderr.log`
+* madsonic's own log goes to: `/var/madsonic/madsonic.log`
 
 You can follow the logs for debuggin by:
 
 ```shell
-$ sudo docker exec -it [Madsonic](http://www.madsonic.org/) \
+$ sudo docker exec -it madsonic \
     tail -f \
-        /var/log/supervisor/[Madsonic](http://www.madsonic.org/).stdout.log \
-        /var/log/supervisor/[Madsonic](http://www.madsonic.org/).stderr.log  \
-        /var/[Madsonic](http://www.madsonic.org/)/[Madsonic](http://www.madsonic.org/).log
+        /var/log/supervisor/madsonic.stdout.log \
+        /var/log/supervisor/madsonic.stderr.log  \
+        /var/madsonic/madsonic.log
 ```
 
 # Troubleshooting 
 
-During building the [Madsonic](http://www.madsonic.org/) image I run into several problems. All of them should be fixed in this image. But perhaps you run into similair problem for whatever reason. Here are some of the things I did to solve the problems I encountered.
+During building the [Madsonic](http://www.madsonic.org/) image I ran into several problems. All of them should be fixed in this image. But perhaps you run into similair problem for whatever reason. Here are some of the things I did to solve the problems I encountered.
 
 ## No UTF-8 support
 
@@ -135,7 +135,7 @@ Adding or uncommenting `en_US.UTF-8 UTF-8` to/from `/etc/locale.gen` incombinati
 
 First, if you are familiar with supervisor this is all familiar. But if not, this is how it works.
 
-1. The Supervisor deamon reads all config files in `/etc/supervisor/conf.d/*`
+1. The [Supervisor](http://supervisord.org/) deamon reads all config files in `/etc/supervisor/conf.d/*`
 2. These config files launch a script or binairy (mine are at `/usr/local/bin/`)
 3. In case of [Madsonic](http://www.madsonic.org/) this `bash` script launches [Madsonic](http://www.madsonic.org/) which is a Java application.
 
@@ -143,3 +143,11 @@ I need the `bash` script for bootstrapping [Madsonic](http://www.madsonic.org/),
 
 For now I use the default `SIGTERM` signal to stop Madsonic. I'm not totally sure if this is real gracefull shutdown, but works for now.
 
+# Thanks to
+
+Building this image I used to following repro's for inspiration:
+
+https://github.com/sdhibit/docker-madsonic
+https://github.com/binhex/arch-madsonic
+https://github.com/plytro/docker-madsonic
+https://github.com/botez/docker-madsonic
