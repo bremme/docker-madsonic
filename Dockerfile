@@ -52,6 +52,7 @@ RUN unzip -j -o /root/"$MAD_VERSION_DATE"_madsonic-transcode_latest_x64.zip linu
 	rm "/root/$MAD_VERSION_DATE"_madsonic-transcode_latest_x64.zip && \
 	rm /root/transcode/*.txt
 
+# copy config files ###########################################################
 COPY ./COPY/supervisord.conf  	/etc/supervisor/supervisord.conf
 COPY ./COPY/madsonic.conf 		/etc/supervisor/conf.d/madsonic.conf
 COPY ./COPY/bootstrap.conf 		/etc/supervisor/conf.d/bootstrap.conf
@@ -59,12 +60,7 @@ COPY ./COPY/madsonic.sh			/usr/local/bin/madsonic.sh
 COPY ./COPY/bootstrap.sh		/usr/local/bin/bootstrap.sh
 RUN chmod +x /usr/local/bin/*.sh
 
-# madsonic host name / ip address (0.0.0.0)
-# madsonic http port (4050)
-# madsonic https port (0), 0 is disabled
-# madsonic context path, i.e. the last part of the Madsonic URL (/)
-# madsonic initial memory (192)
-# madsonic memory limit, java heap size (384)
+# configure madsonic
 ENV MAD_HOST=0.0.0.0 \
 	MAD_PORT=4040 \
 	MAD_HTTPS_PORT=0 \
@@ -80,10 +76,14 @@ RUN addgroup --gid $MAD_GID madsonic && \
 	adduser --system --gid $MAD_GID --uid $MAD_UID --gecos "Madsonic" --disabled-login madsonic && \
 	adduser madsonic audio
 
-# music directory
+# madsonic music directory
 # VOLUME /var/media/artists
+# madsonic data directory
+# VOLUME /var/madsonic
 
+# madsonic http port
 #EXPOSE 4040
+# madsonic https port
 #EXPOSE 4050
 
 # run supervisord
