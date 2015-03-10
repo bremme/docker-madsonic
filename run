@@ -1,0 +1,33 @@
+#!/bin/bash
+set -e
+
+if [ "$(id -u)" != "0" ]; then
+   echo "This script must be run as root" 1>&2
+   exit 1
+fi
+
+NAME=madsonic
+MUSIC_DIR=/home/bremme/docker/data-host/music-library/
+
+if docker inspect -f "{{ .Name }}" $NAME | grep -q '/'$NAME''; then
+	echo "Restarting $NAME"
+	docker restart $NAME
+else
+	echo "Starting $NAME"
+
+	USER=$(who am i | awk '{print $1}');
+	USER_UID=$(id -u $USER)
+	USER_GID=$(id -g $USER)
+
+	docker run \
+		--env=MAD_UID=$USER_UID \
+		--env=MAD_GID=$USER_GID \
+		--volumes-from=data-madsonic \
+		--volume=$MUSIC_DIR:/var/media/artists \
+		--volume=/etc/timezone:/etc/timezone:ro \
+		--publish=49155:4040 \
+		--name $NAME \
+		--restart=always \
+		--detach=true \
+		bremme/$NAME $@
+fi
