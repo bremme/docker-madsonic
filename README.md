@@ -20,7 +20,7 @@ Docker image of [Madsonic](http://www.madsonic.org/) 5.2.5420 build on Debian Je
 * Lightweight Debian based
 * Supervisor process management
 * UTF-8 support
-* Exposed most of the [Madsonic](http://www.madsonic.org/) configuration options through environmental variables
+* Exposes most of the [Madsonic](http://www.madsonic.org/) configuration options through environmental variables
 
 # Building image
 
@@ -37,9 +37,9 @@ $ sudo docker build -t bremme/[Madsonic](http://www.madsonic.org/)
 $ sudo docker run \
     --volume=/my_music_dir:/var/media/artists \
     --publish=4040:4040 \
-    --name [Madsonic](http://www.madsonic.org/) \
+    --name madsonic \
     --detach \
-    bremme/[Madsonic](http://www.madsonic.org/)
+    bremme/madsonic
 ```
 
 ## Configuration
@@ -69,9 +69,9 @@ $ sudo docker run \
     --env=MAD_GID=1035 \
     --volume=/home/foo/music:/var/media/artists \
     --publish=4040:4040 \
-    --name [Madsonic](http://www.madsonic.org/) \
+    --name madsonic \
     --detach \
-    bremme/[Madsonic](http://www.madsonic.org/)
+    bremme/madsonic
 ```
 
 
@@ -85,10 +85,10 @@ docker run \
     --volume=/my_music_dir:/var/media/artists \
     --volume=/etc/timezone:/etc/timezone:ro \
     --publish=49155:4040 \
-    --name [Madsonic](http://www.madsonic.org/) \
+    --name madsonic \
     --restart=always \
     --detach=true \
-    bremme/[Madsonic](http://www.madsonic.org/)
+    bremme/madsonic
 ```
 
 ## Logs
