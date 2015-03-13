@@ -1,17 +1,24 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-#Table of Contents
+# Table of Contents
 
-- [Docker [Madsonic](http://www.madsonic.org/) 5.2](#docker-[Madsonic](http://www.madsonic.org/)-52)
+- [Docker [Madsonic](http://www.madsonic.org/) 5.2 ![alt-text][madsonic]](#docker-madsonichttpwwwmadsonicorg-52-alt-textmadsonic)
+  - [Features](#features)
 - [Building image](#building-image)
 - [Running container](#running-container)
   - [Just run](#just-run)
   - [Configuration](#configuration)
   - [Recommended use](#recommended-use)
+  - [Logs](#logs)
+- [Troubleshooting](#troubleshooting)
+  - [No UTF-8 support](#no-utf-8-support)
+  - [Properly starting and stopping [Madsonic](http://www.madsonic.org/)](#properly-starting-and-stopping-madsonichttpwwwmadsonicorg)
+- [Thanks to](#thanks-to)
+- [Todo](#todo)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-# Docker [Madsonic](http://www.madsonic.org/) 5.2
+# Docker [Madsonic](http://www.madsonic.org/) 5.2 ![alt-text][madsonic]
 
 Docker image of [Madsonic](http://www.madsonic.org/) 5.2.5420 build on Debian Jessie using supervisor to bootstrap and run [Madsonic](http://www.madsonic.org/).
 
@@ -61,7 +68,7 @@ $ sudo docker run \
  
 If you are mounting a music directory from your host machine and you want [Madsonic](http://www.madsonic.org/) to be able to change album art and tags, MAD_UID and MAD_GID should match the UID and GID of the music directory on the host machine.
 
-So if you music collection is store at `/home/foo/music` and the uid of foo is `1020` and the gid `1035` you should start [Madsonic](http://www.madsonic.org/) with:
+So if you music collection is stored at `/home/foo/music` and the uid of foo is `1020` and the gid `1035` you should start [Madsonic](http://www.madsonic.org/) with:
 
 ```shell
 $ sudo docker run \
@@ -76,6 +83,8 @@ $ sudo docker run \
 
 
 ## Recommended use
+
+I like to store application state in a separate [data only volume](https://docs.docker.com/userguide/dockervolumes/). You can mount volumes from a (data) container using the `--volumes-from` switch. If you don't want to run a separate container, but want to preserve state. You should either build the image or run the container with a volume `/var/madsonic`.
 
 ```shell
 docker run \
@@ -99,7 +108,7 @@ docker run \
 * stderr goed to: `/var/log/supervisor/madsonic.stderr.log`
 * madsonic's own log goes to: `/var/madsonic/madsonic.log`
 
-You can follow the logs for debuggin by:
+You can follow the logs for debugging by:
 
 ```shell
 $ sudo docker exec -it madsonic \
@@ -129,6 +138,16 @@ ENV LC_ALL=en_US.UTF-8 \
     LANGUAGE=en_US.UTF-8
 ```
 
+The ouput of `locale -a` is now:
+
+```shell
+$ locale -a
+C
+C.UTF-8
+en_US.utf8
+POSIX
+```
+
 Adding or uncommenting `en_US.UTF-8 UTF-8` to/from `/etc/locale.gen` incombination with `locale-gen` generates the new locale. You can check if it properly installed by `locale -a`. Setting the locale environmental variables afterward does not result in any error and your new locale is properly configured.
 
 ## Properly starting and stopping [Madsonic](http://www.madsonic.org/)
@@ -147,11 +166,13 @@ For now I use the default `SIGTERM` signal to stop Madsonic. I'm not totally sur
 
 Building this image I used to following repro's for inspiration:
 
-https://github.com/binhex/arch-madsonic
-https://github.com/botez/docker-madsonic
-https://github.com/sdhibit/docker-madsonic
-https://github.com/plytro/docker-madsonic
+[binhex/arch-madsonic](https://github.com/binhex/arch-madsonic)
+[botez/docker-madsonic](https://github.com/botez/docker-madsonic)
+[sdhibit/docker-madsonic](https://github.com/sdhibit/docker-madsonic)
+[plytro/docker-madsonic](https://github.com/plytro/docker-madsonic)
 
 # Todo
 
-* Pulseaudio pass through (Madsonic keeps crasing when changing tracks)
+* Pulseaudio pass through (Madsonic keeps crasing when I change tracks)
+
+[madsonic]: http://forum.madsonic.org/styles/prosilver_se/imageset/logo.default.png "Madsonic" 
