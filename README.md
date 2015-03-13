@@ -21,6 +21,7 @@
 # Docker Madsonic 5.2
 
 ![alt-text][madsonic]
+
 Docker image of [Madsonic](http://www.madsonic.org/) 5.2.5420 build on Debian Jessie using supervisor to bootstrap and run [Madsonic](http://www.madsonic.org/).
 
 ## Features
