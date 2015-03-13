@@ -1,8 +1,8 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-# Table of Contents
+## Table of Contents
 
-- [Docker [Madsonic](http://www.madsonic.org/) 5.2 ![alt-text][madsonic]](#docker-madsonichttpwwwmadsonicorg-52-alt-textmadsonic)
+- [Docker Madsonic 5.2](#docker-madsonic-52)
   - [Features](#features)
 - [Building image](#building-image)
 - [Running container](#running-container)
@@ -18,8 +18,9 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-# Docker [Madsonic](http://www.madsonic.org/) 5.2 ![alt-text][madsonic]
+# Docker Madsonic 5.2
 
+![alt-text][madsonic]
 Docker image of [Madsonic](http://www.madsonic.org/) 5.2.5420 build on Debian Jessie using supervisor to bootstrap and run [Madsonic](http://www.madsonic.org/).
 
 ## Features
