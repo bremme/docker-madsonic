@@ -81,7 +81,7 @@ $ sudo docker run \
 docker run \
     --env=MAD_UID=1000 \
     --env=MAD_GID=1000 \
-    --volumes-from=data-[Madsonic](http://www.madsonic.org/) \
+    --volumes-from=data-madsonic \
     --volume=/my_music_dir:/var/media/artists \
     --volume=/etc/timezone:/etc/timezone:ro \
     --publish=49155:4040 \
@@ -115,7 +115,7 @@ During building the [Madsonic](http://www.madsonic.org/) image I ran into severa
 
 ## No UTF-8 support
 
-Some of the tracks in my music collection contain characters not in the default C.UTF-8 locale. I search for how to properly fix this, and found numerous solutions, this is what I eventually applied and works.
+Some of the tracks in my music collection contain characters not in the default C.UTF-8 locale (like ä, ö, ü, ..). I search for how to properly fix this, and found numerous solutions, this is what I eventually applied and works.
 
 ```
 # fix language
@@ -133,7 +133,7 @@ Adding or uncommenting `en_US.UTF-8 UTF-8` to/from `/etc/locale.gen` incombinati
 
 ## Properly starting and stopping [Madsonic](http://www.madsonic.org/)
 
-First, if you are familiar with supervisor this is all familiar. But if not, this is how it works.
+First, if you are familiar with supervisor this is nothing new. But if not, this is how it works.
 
 1. The [Supervisor](http://supervisord.org/) deamon reads all config files in `/etc/supervisor/conf.d/*`
 2. These config files launch a script or binairy (mine are at `/usr/local/bin/`)
@@ -147,7 +147,11 @@ For now I use the default `SIGTERM` signal to stop Madsonic. I'm not totally sur
 
 Building this image I used to following repro's for inspiration:
 
-https://github.com/sdhibit/docker-madsonic
 https://github.com/binhex/arch-madsonic
-https://github.com/plytro/docker-madsonic
 https://github.com/botez/docker-madsonic
+https://github.com/sdhibit/docker-madsonic
+https://github.com/plytro/docker-madsonic
+
+# Todo
+
+* Pulseaudio pass through (Madsonic keeps crasing when changing tracks)
